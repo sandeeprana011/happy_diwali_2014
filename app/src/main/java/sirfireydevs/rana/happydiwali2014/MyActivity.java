@@ -8,6 +8,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,7 +57,15 @@ public class MyActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_share) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,"You got a Happy Diwali wish from the sender of this Message. Check Out \"Happy Diwali 2014\"  :-\n\n" +
+                    "https://play.google.com/store/apps/details?id=sirfireydevs.rana.happydiwali2014");
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+
+
             return true;
         }
         return super.onOptionsItemSelected(item);
