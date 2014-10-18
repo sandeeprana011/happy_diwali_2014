@@ -8,8 +8,11 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -102,7 +105,7 @@ public class MyActivity extends Activity {
 
             webview.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
             webview.setWebChromeClient(new WebChromeClient());
-webview.setOnTouchListener(new View.OnTouchListener() {
+            webview.setOnTouchListener(new View.OnTouchListener() {
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         MediaPlayer player = MediaPlayer.create(view.getContext(), R.raw.firework);
@@ -112,7 +115,7 @@ webview.setOnTouchListener(new View.OnTouchListener() {
         return false;
     }
 });
-            webview.loadUrl("http://www.sandeeprana011.hostfree.us/proj/diwali.html");
+            webview.loadUrl("http://www.sandeeprana011.hostfree.us/proj/diwali_app.html");
         }
     }
     public static class AdFragment extends Fragment {
@@ -129,7 +132,7 @@ webview.setOnTouchListener(new View.OnTouchListener() {
             // Gets the ad view defined in layout/ad_fragment.xml with ad unit ID set in
             // values/strings.xml.
             mAdView = (AdView) getView().findViewById(R.id.adView);
-            mAdView.setVisibility(View.VISIBLE);
+
 
 
             // Create an ad request. Check logcat output for the hashed device ID to
@@ -138,8 +141,19 @@ webview.setOnTouchListener(new View.OnTouchListener() {
             AdRequest adRequest = new AdRequest.Builder().build();
 
 
+            ConnectivityManager cm =
+                    (ConnectivityManager)getView().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null &&
+                    activeNetwork.isConnectedOrConnecting();
+
+
+            if(isConnected==true) {
+                mAdView.setVisibility(View.VISIBLE);
+                mAdView.loadAd(adRequest);
+            }
             // Start loading the ad in the background.
-            mAdView.loadAd(adRequest);
         }
 
         @Override
